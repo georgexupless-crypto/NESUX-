@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusOS Auth</title>
+    <style>
+        :root {
+            --neon-cyan: #00f3ff;
+            --neon-pink: #ff00ff;
+            --ios-glass: rgba(10, 10, 20, 0.75);
+            --border-glow: rgba(0, 243, 255, 0.3);
+        }
+
+        * { box-sizing: border-box; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #050508;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* Animated Cyber-Grid Background */
+        .bg-grid {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(var(--border-glow) 1px, transparent 1px),
+                              linear-gradient(90deg, var(--border-glow) 1px, transparent 1px);
+            background-size: 40px 40px;
+            transform: perspective(500px) rotateX(60deg) translateY(-200px);
+            z-index: -1;
+            opacity: 0.3;
+            animation: moveGrid 10s linear infinite;
+        }
+
+        @keyframes moveGrid {
+            from { background-position: 0 0; }
+            to { background-position: 0 40px; }
+        }
+
+        .container {
+            width: 380px;
+            padding: 40px;
+            background: var(--ios-glass);
+            backdrop-filter: blur(25px);
+            border-radius: 45px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 20px var(--border-glow);
+            position: relative;
+        }
+
+        .view { display: none; animation: fadeIn 0.5s ease; }
+        .view.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-weight: 200;
+            text-align: center;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
+        }
+
+        .input-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            color: white;
+            outline: none;
+            font-size: 14px;
+        }
+
+        input:focus {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px var(--border-glow);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 18px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--neon-cyan), #00a2ff);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 25px var(--neon-cyan);
+            transform: scale(1.02);
+        }
+
+        .footer-links {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .footer-links a {
+            color: var(--neon-pink);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .footer-links a:hover { text-decoration: underline; }
+
+    </style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+
+<div class="container">
+    <div id="login-view" class="view active">
+        <h2>Initialize</h2>
+        <div class="input-box">
+            <input type="text" placeholder="IDENTITY_HASH (Email)">
+        </div>
+        <div class="input-box">
+            <input type="password" placeholder="ENCRYPTION_KEY">
+        </div>
+        <button class="btn btn-primary" onclick="alert('Accessing Mainframe...')">Authorize Session</button>
+        <div class="footer-links">
+            <p>New Entity? <a onclick="showView('signup-view')">Sync New Identity</a></p>
+            <p><a onclick="showView('recover-view')">Forget Key?</a></p>
+        </div>
+    </div>
+
+    <div id="signup-view" class="view">
+        <h2>New Identity</h2>
+        <div class="input-box">
+            <input type="text" placeholder="GENERATE USERNAME">
+        </div>
+        <div class="input-box">
+            <input type="email" placeholder="NEURAL_LINK@EMAIL.COM">
+        </div>
+        <div class="input-box">
+            <input type="password" placeholder="CREATE_KEY">
+        </div>
+        <button class="btn btn-primary">Establish Uplink</button>
+        <div class="footer-links">
+            <p>Already Synced? <a onclick="showView('login-view')">Return to Login</a></p>
+        </div>
+    </div>
+
+    <div id="recover-view" class="view">
+        <h2>Data Recovery</h2>
+        <p style="font-size: 0.8rem; text-align: center; color: var(--neon-cyan); margin-bottom: 20px;">Enter Neural ID to reset encryption.</p>
+        <div class="input-box">
+            <input type="email" placeholder="REGISTERED_EMAIL">
+        </div>
+        <button class="btn btn-primary">Send Recovery Signal</button>
+        <div class="footer-links">
+            <p><a onclick="showView('login-view')">Back to Terminal</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showView(viewId) {
+        // Hide all views
+        document.querySelectorAll('.view').forEach(view => {
+            view.classList.remove('active');
+        });
+        // Show selected view
+        document.getElementById(viewId).classList.add('active');
+    }
+</script>
+
+</body>
+  </html>
+  
